@@ -36,6 +36,8 @@ exports.signin = (req, res) => {
 
 exports.register = async(req, res) => { 
       const { 
+        firstName,
+        lastName,
         email,
         password
       } = req.body;
@@ -51,6 +53,8 @@ exports.register = async(req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const _user = new User({
+            firstName,
+            lastName,
             email,
             password: hashedPassword,
         });
