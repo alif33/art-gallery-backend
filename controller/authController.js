@@ -22,10 +22,10 @@ exports.signin = (req, res) => {
       const { _id, email } = user;
       const token = generateJwtToken(_id, email);
       res.status(200).json({
-        success: true,
+            success: true,
             message: "Well come",
-            token,
-            email
+            user,
+            token
           });
           
         } else {
