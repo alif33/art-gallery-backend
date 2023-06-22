@@ -1,8 +1,9 @@
 const Art = require("../models/Art");
+const Artist = require("../models/Artist");
 
 exports.getArts = async(req, res) => {
     const arts = await Art.find({})
-    // .populate("products", { Product });
+    .populate("artist", { Artist });
     res.status(200).json({arts: arts.reverse()});
 };
 

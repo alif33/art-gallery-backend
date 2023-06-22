@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Art = require("../models/Art");
 const { generateJwtToken } = require("../utils");
 
 exports.getUsers = async(req, res) => {
@@ -32,7 +33,7 @@ exports.signin = (req, res) => {
           return res.status(400).json({ message: "Something went wrong" });
         }
       });
-    };
+  };
 
 exports.register = async(req, res) => { 
       const { 
@@ -82,4 +83,51 @@ exports.register = async(req, res) => {
       error
     });
   }
+}
+
+
+exports.getFavoruites= async(req, res)=>{
+  const { _id } = req.user
+  const user = await User.findOne({ _id }).populate("favorites", {Art})
+  console.log(user);
+  if(user?.favorites){
+    return res.status(200)
+    .json({ 
+      arts: user.favorites
+    });
+  }
+  
+}
+
+exports.addToFavoruite = async(req, res) =>{
+  const { _id } = req.user
+
+  try {
+    const { artId } = req.params;
+
+    User.findOneAndUpdate(
+      { _id },
+      { $push: { favorites: artId } },
+      { new: true },
+      (err, user) => {
+        if (err) {
+          return res.status(500).json({ message: "Server error" });
+        }
+        
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+        
+        return res.status(200).json({ message: "Art added to favorites" });
+      }
+    );
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+exports.removeFromFavoruite=()=>{
+  const { _id } = req.user
 }
