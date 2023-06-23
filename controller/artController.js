@@ -9,14 +9,14 @@ exports.getArts = async(req, res) => {
 
 exports.addArt = async(req, res) => {
     const { 
-        title,
+        artName,
         artImage,
         artType,
         artist
     } = req.body;
 
     const _art = new Art({
-        artName: title,
+        artName,
         artImage,
         artType,
         artist
