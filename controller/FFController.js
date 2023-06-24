@@ -10,11 +10,13 @@ exports.getfunFacts = async(req, res) => {
 exports.addFunfact = async(req, res) => {
     const { 
         title,
+        image,
         artist 
     } = req.body;
 
     const _funFact = new Funfact({
         title,
+        image,
         artist 
     })
     _funFact.save( async(err, funFact) => {
